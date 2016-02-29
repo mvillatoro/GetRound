@@ -2,6 +2,7 @@
 #include "stdlib.h"
 #include "stdio.h"
 #include "time.h"
+#include "collision.h"
 
 unsigned char wallAboveBelow[] ={
 GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,

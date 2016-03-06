@@ -4,106 +4,91 @@
 #include "time.h"
 #include "collision.h"
 
-unsigned char wallAboveBelow[] ={
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN
+//Variables
+int windowx = VGA.getHSize();
+int windowy = VGA.getVSize();
+struct block wall[5];
+int steps =0;
+int d =0;
+int fps = 0;
+int playerPosX = 50;
+int playerPosY = 100;
+
+void init_field(){
+  //bloque, tipo, posx, posy, height, base, active
+  init_block(&wall[0], 3, 40, 0, 30*4, 2, 1);
+  init_block(&wall[1], 3, 40, windowy-4, 30*4, 2, 1);
+  init_block(&wall[2], 3, windowx-10, 0, 2, 29*4, 1);
+  init_block(&wall[3], 3, 40, 0, 2, 29*4, 1);
+  init_block(&wall[4], 1, playerPosX, playerPosY, 6, 10 , 1);
 };
 
-unsigned char wallLeftRight[] ={
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN,
-GREEN, GREEN, GREEN, GREEN, GREEN, GREEN, GREEN
+void render_field(){
+    for(int x = 0; x < 5; x++)
+      renderBlock(wall[x]);
 };
 
-struct Sprite
-{
-  int posX;
-  int posY;
-  int width;
-  int height;
-  unsigned char *image;
-};
 
-struct Sprite WallAbove;
-struct Sprite WallBelow;
-struct Sprite WallLeft;
-struct Sprite WallRight;
-
-void InitWallAbove(){
-  WallAbove.posX = 1;
-  WallAbove.posY = 1;
-  WallAbove.width = 158;  
-  WallAbove.height = 1;
-  WallAbove.image = wallAboveBelow;
-};
-
-void InitWallBelow(){
-  WallBelow.posX = 1;
-  WallBelow.posY = 117;
-  WallBelow.width = 158;  
-  WallBelow.height = 1;
-  WallBelow.image = wallAboveBelow;
-};
-
-void InitWallLeft(){
-  WallLeft.posX = 1;
-  WallLeft.posY = 1;
-  WallLeft.width = 1;  
-  WallLeft.height = 117;
-  WallLeft.image = wallLeftRight;
-};
-
-void InitWallRight(){
-  WallRight.posX = 150;
-  WallRight.posY = 1;
-  WallRight.width = 1;  
-  WallRight.height = 117;
-  WallRight.image = wallLeftRight;
-};
-
-void setup()
-{ 
-  
-  InitWallAbove();
-  InitWallBelow();
-  InitWallLeft();
-  InitWallRight();
-  
+void setup(){  
   VGA.begin(VGAWISHBONESLOT(9),CHARMAPWISHBONESLOT(10));
   Serial.begin(9600);
   VGA.setBackgroundColor(BLACK);
-  
-  VGA.writeArea(WallAbove.posX,WallAbove.posY,WallAbove.width, WallAbove.height, WallAbove.image);
-  VGA.writeArea(WallBelow.posX,WallBelow.posY,WallBelow.width, WallBelow.height, WallBelow.image);
-  VGA.writeArea(WallLeft.posX,WallLeft.posY,WallLeft.width, WallLeft.height, WallLeft.image);
-  VGA.writeArea(WallRight.posX,WallRight.posY,WallRight.width, WallRight.height, WallRight.image);
+  init_field();  
   //VGA.clear();
+};
+
+void play(){
+    //  if (PlayingSound) {
+    //     AudioFillBuffer();
+    // }
+    // if(fps == 500000){
+    //   t++;
+    //   fps=0;
+    // }
+    if(d > 100000){
+      //manage_input();
+      VGA.clear();
+      render_field();
+      // render_score();
+      // move_snake(direction);
+      steps++;
+      // if(steps == 5*4){
+      //   generate_manzanitas();
+      //   steps=0;
+      // }
+      d=0;
+      // if(score >= 100)
+      //   state=1;
+      doStuff();
+      init_block(&wall[4], 1, playerPosX, playerPosY, 6, 10 , 1);
+    }
+    d++;
+    fps++;
+}
+
+void doStuff()
+{
+  if(digitalRead(FPGA_BTN_0))
+  {
+    playerPosX = playerPosX - 1; 
+  }
+	
+  if(digitalRead(FPGA_BTN_1))
+  {
+    playerPosX = playerPosX + 1;
+  }
+ 
+  if(digitalRead(FPGA_BTN_2))
+  {
+    playerPosY = playerPosY - 1;     
+  }
+  if(digitalRead(FPGA_BTN_3))
+  {
+    playerPosY = playerPosY +1;     
+  }
 };
 
 void loop()
 {
+  play();
 };
-
-

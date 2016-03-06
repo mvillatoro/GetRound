@@ -28,12 +28,12 @@ void render_field(){
       renderBlock(wall[x]);
 };
 
+
 void setup(){  
   VGA.begin(VGAWISHBONESLOT(9),CHARMAPWISHBONESLOT(10));
   Serial.begin(9600);
   VGA.setBackgroundColor(BLACK);
-  init_field();
-  
+  init_field();  
   //VGA.clear();
 };
 
@@ -45,7 +45,7 @@ void play(){
     //   t++;
     //   fps=0;
     // }
-    if(d > 200000){
+    if(d > 100000){
       //manage_input();
       VGA.clear();
       render_field();
@@ -70,21 +70,21 @@ void doStuff()
 {
   if(digitalRead(FPGA_BTN_0))
   {
-    playerPosX = playerPosX - 2; 
+    playerPosX = playerPosX - 1; 
   }
 	
   if(digitalRead(FPGA_BTN_1))
   {
-    playerPosX = playerPosX + 2;
+    playerPosX = playerPosX + 1;
   }
  
   if(digitalRead(FPGA_BTN_2))
   {
-    playerPosY = playerPosY + 2;     
+    playerPosY = playerPosY - 1;     
   }
   if(digitalRead(FPGA_BTN_3))
   {
-    playerPosY = playerPosY -2;     
+    playerPosY = playerPosY +1;     
   }
 };
 
@@ -92,5 +92,3 @@ void loop()
 {
   play();
 };
-
-

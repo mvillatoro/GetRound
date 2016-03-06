@@ -1,4 +1,3 @@
-
 struct block{
   int posX;
   int posY;
@@ -67,6 +66,15 @@ int Collision(block s1, block s2)
                 PointInRectangle(s1.posX+1,            s1.posY + s1.height-1,   s2.posX+1, s2.posY+1,    s2.posX + s2.width-1,             s2.posY +  s2.height-1) ||
                 PointInRectangle(s1.posX + s1.width-1, s1.posY+1,               s2.posX+1, s2.posY+1,    s2.posX + s2.width-1,             s2.posY +  s2.height-1));
 };
+
+int Collision(Sprite *s1, Sprite *s2)
+{
+	return (PointInRectangle(s1->x,           s1->y,            s2->x, s2->y, s2->x+s2->width, s2->y+s2->height) ||
+		PointInRectangle(s1->x+s1->width, s1->y+s1->height, s2->x,s2->y,  s2->x+s2->width, s2->y+s2->height) ||
+		PointInRectangle(s1->x,           s1->y+s1->height, s2->x, s2->y, s2->x+s2->width, s2->y+s2->height) ||
+		PointInRectangle(s1->x+s1->width, s1->y, s2->x,     s2->y,        s2->x+s2->width, s2->y+s2->height));
+}
+
 
 void init_block(block* _block, int type, int x, int y, int width, int height, int active){
   _block->posX = x;

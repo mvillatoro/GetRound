@@ -20,7 +20,7 @@ void init_field(){
   init_block(&wall[1], 3, 40, windowy-4, 30*4, 2, 1);
   init_block(&wall[2], 3, windowx-10, 0, 2, 29*4, 1);
   init_block(&wall[3], 3, 40, 0, 2, 29*4, 1);
-  init_block(&wall[4], 1, playerPosX, playerPosY, 3, 4 , 1);
+  init_block(&wall[4], 1, playerPosX, playerPosY, 6, 10 , 1);
 };
 
 void render_field(){
@@ -60,7 +60,7 @@ void play(){
       // if(score >= 100)
       //   state=1;
       doStuff();
-      init_block(&wall[4], 1, playerPosX, playerPosY, 3, 4 , 1);
+      init_block(&wall[4], 1, playerPosX, playerPosY, 6, 10 , 1);
     }
     d++;
     fps++;
@@ -70,12 +70,12 @@ void doStuff()
 {
   if(digitalRead(FPGA_BTN_0))
   {
-    playerPosX = playerPosX + 2; 
+    playerPosX = playerPosX - 2; 
   }
 	
   if(digitalRead(FPGA_BTN_1))
   {
-    playerPosX = playerPosX - 2;
+    playerPosX = playerPosX + 2;
   }
  
   if(digitalRead(FPGA_BTN_2))

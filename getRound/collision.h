@@ -8,7 +8,7 @@ struct block{
   unsigned char *image;
 };
 
-unsigned char player[]={
+unsigned char player1[]={
 BLACK,BLACK,WHITE,WHITE,BLACK,
 BLACK,BLACK,BLACK,WHITE,BLACK,
 BLACK,BLACK,BLACK,BLACK,WHITE,
@@ -59,7 +59,7 @@ int PointInRectangle(int x,int y,int x1,int y1,int x2,int y2){
         return ((( (x) >= (x1)) && ((y) >= (y1))) && (((x) <= (x2)) && ((y) <= (y2))));
 };
 
-int Collision(block s1, block s2)
+int Inteaction(block s1, block s2)
 {
         return (PointInRectangle(s1.posX+1,            s1.posY+1,               s2.posX+1, s2.posY+1,    s2.posX + s2.width-1,             s2.posY + s2.height-1)  ||
                 PointInRectangle(s1.posX + s1.width-1, s1.posY + s1.height-1,   s2.posX+1, s2.posY+1,    s2.posX + s2.width-1,             s2.posY + s2.height-1)  ||
@@ -67,12 +67,12 @@ int Collision(block s1, block s2)
                 PointInRectangle(s1.posX + s1.width-1, s1.posY+1,               s2.posX+1, s2.posY+1,    s2.posX + s2.width-1,             s2.posY +  s2.height-1));
 };
 
-int Collision(Sprite *s1, Sprite *s2)
+int Collision(block s1, block s2)
 {
-	return (PointInRectangle(s1->x,           s1->y,            s2->x, s2->y, s2->x+s2->width, s2->y+s2->height) ||
-		PointInRectangle(s1->x+s1->width, s1->y+s1->height, s2->x,s2->y,  s2->x+s2->width, s2->y+s2->height) ||
-		PointInRectangle(s1->x,           s1->y+s1->height, s2->x, s2->y, s2->x+s2->width, s2->y+s2->height) ||
-		PointInRectangle(s1->x+s1->width, s1->y, s2->x,     s2->y,        s2->x+s2->width, s2->y+s2->height));
+	return (PointInRectangle(s1.posX,           s1.posY,            s2.posX, s2.posY, s2.posX+s2.width, s2.posY+s2.height) ||
+		PointInRectangle(s1.posX+s1.width,  s1.posY+s1.height,  s2.posX, s2.posY, s2.posX+s2.width, s2.posY+s2.height) ||
+		PointInRectangle(s1.posX,           s1.posY+s1.height,  s2.posX, s2.posY, s2.posX+s2.width, s2.posY+s2.height) ||
+		PointInRectangle(s1.posX+s1.width,  s1.posY,            s2.posX, s2.posY, s2.posX+s2.width, s2.posY+s2.height));
 }
 
 
@@ -81,7 +81,7 @@ void init_block(block* _block, int type, int x, int y, int width, int height, in
   _block->posY = y;
   switch(type){
     case 1 : _block->image = pixel; break;
-    case 2 : _block->image = player; break;
+    case 2 : _block->image = player1; break;
     case 3 : _block->image = walls; break;
     default : break;
   }

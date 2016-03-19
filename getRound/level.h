@@ -8,7 +8,6 @@ struct block{
   unsigned char *image;
 };
 
-
 unsigned char enter_Door[]={
   RED, RED, RED, RED, RED, RED, RED, RED, RED, RED, RED, RED, RED, RED,
   RED, RED, RED, RED, RED, RED, RED, RED, RED, RED, RED, RED, RED, RED

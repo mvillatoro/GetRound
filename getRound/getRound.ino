@@ -18,6 +18,13 @@ int steps =0;
 int d =0;
 int fps = 0;
 int state = 0;
+int btn_A =  FPGA_GPIO_10;
+int btn_B =  FPGA_GPIO_12;
+int btn_L =  FPGA_GPIO_14;
+int btn_R =  FPGA_GPIO_16;
+int btn_U =  FPGA_GPIO_18;
+int btn_D =  FPGA_GPIO_20;
+int event = 0;
 
 //Botones:
 int btn_A =  FPGA_GPIO_10;

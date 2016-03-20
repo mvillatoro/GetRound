@@ -83,7 +83,7 @@ void print_number(int x, int y, int msg){
       VGA.printtext(x, y, snum);
 }
 
-int Inteaction(block s1, block s2)
+int Interaction(block s1, block s2)
 {
         return (PointInRectangle(s1.posX+1,            s1.posY+1,               s2.posX+1, s2.posY+1,    s2.posX + s2.width-1,             s2.posY + s2.height-1)  ||
                 PointInRectangle(s1.posX + s1.width-1, s1.posY + s1.height-1,   s2.posX+1, s2.posY+1,    s2.posX + s2.width-1,             s2.posY + s2.height-1)  ||
@@ -104,8 +104,8 @@ void init_block(block* _block, int type, int x, int y, int width, int height, in
   _block->posX = x;
   _block->posY = y;
   switch(type){
-    case 1 : _block->image = pixel; break;
-    case 2 : _block->image = player1; break;
+    case 1 : _block->image = player1; break;
+    case 2 : _block->image = pixel; break;
     case 3 : _block->image = walls; break;
     case 4 : _block->image = exit_Door; break;
     case 5 : _block->image = enter_Door; break;

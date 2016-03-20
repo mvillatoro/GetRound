@@ -10,10 +10,18 @@ int windowy = VGA.getVSize();
 struct block wall[4];
 struct block player;
 struct block door[2];
+struct block obstaculo;
 int steps =0;
 int d =0;
 int fps = 0;
 int state = 0;
+int btn_A =  FPGA_GPIO_10;
+int btn_B =  FPGA_GPIO_12;
+int btn_L =  FPGA_GPIO_14;
+int btn_R =  FPGA_GPIO_16;
+int btn_U =  FPGA_GPIO_18;
+int btn_D =  FPGA_GPIO_20;
+int event = 0;
 
 void init_field(){
   //bloque, tipo, posx, posy, height, base, active
@@ -24,6 +32,7 @@ void init_field(){
   init_block(&player , 1, 52, 106, 6, 10 , 1);
   init_block(&door[0], 5, 48, 116, 14, 2 , 1);   //enter
   init_block(&door[1], 4, 130, 2,   14, 2 , 1);   //exit
+  init_block(&obstaculo, 2, 50, 10, 10, 10 , 1);  //test obstaculo
 };
 
 void render_field(){
@@ -32,6 +41,12 @@ void render_field(){
   renderBlock(player);  
   renderBlock(door[0]);
   renderBlock(door[1]);  
+    renderBlock(obstaculo);
+    if(event >0){  
+      VGA.setBackgroundColor(WHITE);
+      VGA.printtext(22, 30, "event!!!!");
+      VGA.setBackgroundColor(BLACK);
+    }
 };
 
 
@@ -50,36 +65,38 @@ void play(){
 }
 
 void resetLevel(){
-  if(digitalRead(){
-  
-  }
 }
 
 void movePlayer()
 {
-  if(digitalRead(FPGA_BTN_0))
+ if(digitalRead(btn_R) || digitalRead(FPGA_BTN_0))
   {
     if(!Collision(player,wall[2]))
       player.posX += 2;
   }
 	
-  if(digitalRead(FPGA_BTN_1))
+  if(digitalRead(btn_L) || digitalRead(FPGA_BTN_1))
   {
     if(!Collision(player,wall[3]))
       player.posX -= 2;
   }
  
-  if(digitalRead(FPGA_BTN_2))
+  if(digitalRead(btn_U) || digitalRead(FPGA_BTN_2))
   {
     if(!Collision(player,wall[0]))
       player.posY -= 2;    
   }
-  if(digitalRead(FPGA_BTN_3))
+  if(digitalRead(btn_D) || digitalRead(FPGA_BTN_3))
   {
     if(!Collision(player,wall[1]))
       player.posY += 2; 
   }
   
+  if(Interaction(player,obstaculo) && digitalRead(btn_A)){
+    event = 1;
+  }else if (Interaction(player,obstaculo) && digitalRead(btn_B)){
+    event = 0;
+  }
 };
 
 void render_page(void (*function)(),void (*game)(), int _fps ){

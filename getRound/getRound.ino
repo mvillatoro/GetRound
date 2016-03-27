@@ -26,6 +26,7 @@ int nivel = 1;
 int vidas = 3;
 int win [3]= {0,0,0};
 int win_cons= 0;
+int indexRoom = 0;
 
 //Botones:
 int btn_A =  FPGA_GPIO_10;
@@ -172,7 +173,7 @@ void init_field(){
   init_block(&lives[0], 7, 2, 0, 5, 5 , 1);
   init_block(&lives[1], 7, 8, 0, 5, 5 , 1);
   init_block(&lives[2], 7, 14, 0, 5, 5 , 1);
-  init_game(&room[mundo*nivel-1],mundo-1,nivel-1);
+  
 };
 
 void render_field(){
@@ -183,7 +184,7 @@ void render_field(){
   renderBlock(door[1]);  
   renderBlock(obstaculo);
   for(int x = 0; x < 3; x++)
-    renderBlock(room[mundo*nivel-1].obstaculo[x]);
+    renderBlock(room[indexRoom].obstaculo[x]);
   for(int x = 0; x < vidas; x++)
     renderBlock(lives[x]);
 };
@@ -217,6 +218,15 @@ void setup(){
   init_field();
   initMusic(); // Inicializa Todo lo Musica
   SoundPlay("tetris.snd"); // Hace Sonar la cancion del Menu
+  init_game(&room[0],0,0);
+  init_game(&room[1],0,1);
+  init_game(&room[2],0,2);
+  init_game(&room[3],1,0);
+  init_game(&room[4],1,1);
+  init_game(&room[5],1,2);
+  init_game(&room[6],2,0);
+  init_game(&room[7],2,1);
+  init_game(&room[8],2,2);
 };
 
 
@@ -226,22 +236,28 @@ void play(){
   renderBlock(player);
   movePlayer();
   VGA.setBackgroundColor(WHITE);
-  VGA.printtext(0, 10, "Hint:");
-  VGA.writeArea(0,20,7,7,hint1);
+  VGA.printtext(0, 10, room[indexRoom].label);
+  VGA.printtext(0, 20, "Hint:");
+  VGA.writeArea(0,30,7,7,hint1);
   VGA.setBackgroundColor(BLACK);
 }
 
 void resetLevel(){
   init_field();
-  room[mundo*nivel-1].obstaculo[0].active = 1;
-  room[mundo*nivel-1].obstaculo[1].active = 1;
-  room[mundo*nivel-1].obstaculo[2].active = 1;
+  room[indexRoom].obstaculo[0].active = 1;
+  room[indexRoom].obstaculo[1].active = 1;
+  room[indexRoom].obstaculo[2].active = 1;
+  win[0] = 0 ;
+  win[1] = 0 ;
+  win[2] = 0 ;
+  win_cons = 0;
 }
 
 void movePlayer()
 {
  if(vidas==0){
    state = 3;
+   return;
  }
  
  if(digitalRead(btn_R) || digitalRead(FPGA_BTN_0))
@@ -267,42 +283,42 @@ void movePlayer()
       player.posY += 2; 
   }
   
-  if(Interaction(player,room[mundo*nivel-1].obstaculo[0]) && digitalRead(btn_A)){
+  //int index = (mundo * nivel) - 1;
+  
+  if(Interaction(player,room[indexRoom].obstaculo[0]) && digitalRead(btn_A)){
     win[win_cons] = 0;
     win_cons++;
-    room[mundo*nivel-1].obstaculo[0].active = 0;
+    room[indexRoom].obstaculo[0].active = 0;
   }
   
-  if(Interaction(player,room[mundo*nivel-1].obstaculo[1]) && digitalRead(btn_A)){
+  if(Interaction(player,room[indexRoom].obstaculo[1]) && digitalRead(btn_A)){
     win[win_cons] = 1;
     win_cons++;
-    room[mundo*nivel-1].obstaculo[1].active = 0;
+    room[indexRoom].obstaculo[1].active = 0;
   }
   
-  if(Interaction(player,room[mundo*nivel-1].obstaculo[2]) && digitalRead(btn_A)){
+  if(Interaction(player,room[indexRoom].obstaculo[2]) && digitalRead(btn_A)){
     win[win_cons] = 2;
     win_cons++;
-    room[mundo*nivel-1].obstaculo[2].active = 0;
+    room[indexRoom].obstaculo[2].active = 0;
   }
   
   if(Interaction(player,door[1]) && digitalRead(btn_A) && win_cons >= 3){
-    int cur = mundo*nivel-1;
-    if(win [0] == room[cur].win[0] && win [1] == room[cur].win[1] && win [2] == room[cur].win[2]){
-      if(mundo*nivel == 9){
+    int cur = indexRoom;
+    if((win [0] == room[cur].win[0]) && (win [1] == room[cur].win[1]) && (win [2] == room[cur].win[2])){
+      if((mundo * nivel) == 3){
         state = 2;
       }else if(nivel == 3){
         mundo++;
         nivel = 1;
+        indexRoom++;
       }else{
-        nivel++; 
+        nivel++;
+        indexRoom++;
       }
       resetLevel();
     }else{
       resetLevel();
-      win[0] = 0 ;
-      win[1] = 0 ;
-      win[2] = 0 ;
-      win_cons = 0;
       vidas--;
     }
   }
@@ -340,6 +356,7 @@ void reinit_game(){
   win[1] = 0 ;
   win[2] = 0 ;
   win_cons = 0;
+  indexRoom = 0;
 };
 
 void menu(){

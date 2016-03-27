@@ -2,6 +2,7 @@
 #include "stdlib.h"
 #include "stdio.h"
 #include "time.h"
+#include "level.h"
 #include "collision.h"
 
 #include "SmallFS.h"
@@ -14,10 +15,17 @@ struct block wall[4];
 struct block player;
 struct block door[2];
 struct block obstaculo;
+struct block lives[3];
+struct game room[9];
 int steps =0;
 int d =0;
 int fps = 0;
 int state = 0;
+int mundo = 1;
+int nivel = 1;
+int vidas = 3;
+int win [3]= {0,0,0};
+int win_cons= 0;
 
 //Botones:
 int btn_A =  FPGA_GPIO_10;
@@ -154,14 +162,17 @@ void _zpu_interrupt ()
 
 void init_field(){
   //bloque, tipo, posx, posy, height, base, active
-  init_block(&wall[0], 3, 40, 0, 30*4, 2, 1);           //wall bottom
-  init_block(&wall[1], 3, 40, windowy-4, 30*4, 2, 1);   //wall above
-  init_block(&wall[2], 3, windowx-10, 0, 2, 29*4, 1);   //wall right
-  init_block(&wall[3], 3, 40, 0,  2, 29*4, 1);           //wall left
-  init_block(&player , 1, 52, 106, 6, 10 , 1);
-  init_block(&door[0], 5, 48, 116, 14, 2 , 1);   //enter
+  init_block(&wall[0], 3, 40, 0, 28*4, 2, 1);           //wall above 
+  init_block(&wall[1], 3, 40, windowy-12, 30*4, 2, 1);   //wall bottom
+  init_block(&wall[2], 3, windowx-10, 0, 2, 27*4, 1);   //wall right
+  init_block(&wall[3], 3, 40, 0,  2, 27*4, 1);           //wall left
+  init_block(&player , 1, 52,  windowy-22, 6, 10 , 1);
+  init_block(&door[0], 5, 48,  windowy-12, 14, 2 , 1);   //enter
   init_block(&door[1], 4, 130, 2,   14, 2 , 1);   //exit
-  init_block(&obstaculo, 2, 50, 10, 10, 10 , 1);  //test obstaculo
+  init_block(&lives[0], 7, 2, 0, 5, 5 , 1);
+  init_block(&lives[1], 7, 8, 0, 5, 5 , 1);
+  init_block(&lives[2], 7, 14, 0, 5, 5 , 1);
+  init_game(&room[mundo*nivel-1],mundo-1,nivel-1);
 };
 
 void render_field(){
@@ -170,12 +181,11 @@ void render_field(){
   renderBlock(player);  
   renderBlock(door[0]);
   renderBlock(door[1]);  
-    renderBlock(obstaculo);
-    if(event >0){  
-      VGA.setBackgroundColor(WHITE);
-      VGA.printtext(22, 30, "event!!!!");
-      VGA.setBackgroundColor(BLACK);
-    }
+  renderBlock(obstaculo);
+  for(int x = 0; x < 3; x++)
+    renderBlock(room[mundo*nivel-1].obstaculo[x]);
+  for(int x = 0; x < vidas; x++)
+    renderBlock(lives[x]);
 };
 
 void initMusic(){
@@ -192,7 +202,7 @@ void initMusic(){
     outputPinForFunction(FPGA_J2_7, 0);
     
     if (SmallFS.begin()<0) {
-        Serial.println("No SmalLFS found, aborting.");
+      Serial.println("No SmalLFS found, aborting.");
         
         while(1) {};
     }
@@ -206,7 +216,7 @@ void setup(){
   VGA.setBackgroundColor(BLACK);
   init_field();
   initMusic(); // Inicializa Todo lo Musica
-//  SoundPlay("tetris.snd"); // Hace Sonar la cancion del Menu
+  SoundPlay("tetris.snd"); // Hace Sonar la cancion del Menu
 };
 
 
@@ -215,13 +225,25 @@ void play(){
   render_field();
   renderBlock(player);
   movePlayer();
+  VGA.setBackgroundColor(WHITE);
+  VGA.printtext(0, 10, "Hint:");
+  VGA.writeArea(0,20,7,7,hint1);
+  VGA.setBackgroundColor(BLACK);
 }
 
 void resetLevel(){
+  init_field();
+  room[mundo*nivel-1].obstaculo[0].active = 1;
+  room[mundo*nivel-1].obstaculo[1].active = 1;
+  room[mundo*nivel-1].obstaculo[2].active = 1;
 }
 
 void movePlayer()
 {
+ if(vidas==0){
+   state = 3;
+ }
+ 
  if(digitalRead(btn_R) || digitalRead(FPGA_BTN_0))
   {
     if(!Collision(player,wall[2]))
@@ -245,11 +267,57 @@ void movePlayer()
       player.posY += 2; 
   }
   
-  if(Interaction(player,obstaculo) && digitalRead(btn_A)){
-    event = 1;
-  }else if (Interaction(player,obstaculo) && digitalRead(btn_B)){
-    event = 0;
+  if(Interaction(player,room[mundo*nivel-1].obstaculo[0]) && digitalRead(btn_A)){
+    win[win_cons] = 0;
+    win_cons++;
+    room[mundo*nivel-1].obstaculo[0].active = 0;
   }
+  
+  if(Interaction(player,room[mundo*nivel-1].obstaculo[1]) && digitalRead(btn_A)){
+    win[win_cons] = 1;
+    win_cons++;
+    room[mundo*nivel-1].obstaculo[1].active = 0;
+  }
+  
+  if(Interaction(player,room[mundo*nivel-1].obstaculo[2]) && digitalRead(btn_A)){
+    win[win_cons] = 2;
+    win_cons++;
+    room[mundo*nivel-1].obstaculo[2].active = 0;
+  }
+  
+  if(Interaction(player,door[1]) && digitalRead(btn_A) && win_cons >= 3){
+    int cur = mundo*nivel-1;
+    if(win [0] == room[cur].win[0] && win [1] == room[cur].win[1] && win [2] == room[cur].win[2]){
+      if(mundo*nivel == 9){
+        state = 2;
+      }else if(nivel == 3){
+        mundo++;
+        nivel = 1;
+      }else{
+        nivel++; 
+      }
+      resetLevel();
+    }else{
+      resetLevel();
+      win[0] = 0 ;
+      win[1] = 0 ;
+      win[2] = 0 ;
+      win_cons = 0;
+      vidas--;
+    }
+  }
+};
+
+void gano(){
+  VGA.setBackgroundColor(WHITE);
+  VGA.printtext(32, 20, "WIN");
+  VGA.setBackgroundColor(BLACK);
+};
+
+void perdio(){
+  VGA.setBackgroundColor(WHITE);
+  VGA.printtext(32, 20, "LOOSE");
+  VGA.setBackgroundColor(BLACK);
 };
 
 void render_page(void (*function)(),void (*game)(), int _fps ){
@@ -262,11 +330,28 @@ void render_page(void (*function)(),void (*game)(), int _fps ){
     d++;
     fps++;
 }
+void reinit_game(){
+  d =0;
+  fps = 0;
+  mundo = 1;
+  nivel = 1;
+  vidas = 3;
+  win[0] = 0 ;
+  win[1] = 0 ;
+  win[2] = 0 ;
+  win_cons = 0;
+};
 
 void menu(){
   VGA.setBackgroundColor(WHITE);
-  VGA.printtext(22, 30, "Menu");
-  if(digitalRead(FPGA_BTN_0)){
+  VGA.printtext(32, 20, "Menu");
+  VGA.printtext(0, 30, "El Juego consiste");
+  VGA.printtext(0, 40, "en ver el hint y ");
+  VGA.printtext(0, 50, "descubrir el orden");
+  VGA.printtext(0, 60, "en el que se");
+  VGA.printtext(0, 70, "debe interactuar");
+  VGA.printtext(0, 80, "con el cuarto.");
+  if(digitalRead(btn_A)){
     VGA.setBackgroundColor(BLACK);
     state = 1;
     SoundPlay("guiletheme.snd"); // Hace sonar la cancion del juego
@@ -283,18 +368,26 @@ void loop()
   }
   //menu
   if(state == 0){
-    render_page(&menu,nan,100000);
+    render_page(&menu,&nan,100000);
   }
   //Game
   if(state == 1){
-    render_page(&play,nan,100000);
+    render_page(&play,&nan,100000);
   }
   //win
   if(state == 2){
-    VGA.clear();
+    render_page(&gano,&nan,100000);
+    if(digitalRead(btn_A)){
+      state = 0;
+      reinit_game();
+    }
   }
   //loose
   if(state == 3){
-    VGA.clear();
+    render_page(&perdio,&nan,100000);
+    if(digitalRead(btn_A)){
+      state = 0;
+      reinit_game();
+    }
   }
 };

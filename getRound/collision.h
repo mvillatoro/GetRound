@@ -8,6 +8,13 @@ struct block{
   unsigned char *image;
 };
 
+struct game{
+  int mundo;
+  int nivel;
+  struct block obstaculo[3];
+  char *hint; 
+  int win [3];
+};
 
 unsigned char enter_Door[]={
   RED, RED, RED, RED, RED, RED, RED, RED, RED, RED, RED, RED, RED, RED,
@@ -34,6 +41,14 @@ BLACK,BLACK,WHITE,BLACK,BLACK,
 WHITE,BLACK,BLACK,WHITE,BLACK
 };
 
+unsigned char heart[]={
+BLACK,RED,BLACK,RED,BLACK,
+RED,BLACK,RED,BLACK,RED,
+RED,BLACK,BLACK,BLACK,RED,
+BLACK,RED,BLACK,RED,BLACK,
+BLACK,BLACK,RED,BLACK,BLACK
+};
+
 unsigned char pixel[]={
 BLACK,BLACK,WHITE,WHITE,BLACK,BLACK,
 BLACK,BLACK,WHITE,BLACK,BLACK,BLACK,
@@ -45,6 +60,57 @@ BLACK,BLACK,WHITE,WHITE,BLACK,BLACK,
 BLACK,WHITE,BLACK,BLACK,WHITE,BLACK,
 BLACK,WHITE,BLACK,BLACK,WHITE,BLACK,
 BLACK,WHITE,BLACK,BLACK,WHITE,BLACK
+};
+
+unsigned char tottem1[]={
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK,
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK,
+BLUE,BLACK,BLUE,BLUE,BLACK,BLUE,
+BLACK,BLUE,BLUE,BLUE,BLUE,BLACK,
+BLACK,BLACK,CYAN,CYAN,BLACK,BLACK,
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK,
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK,
+BLUE,BLACK,BLUE,BLUE,BLACK,BLUE,
+BLACK,BLUE,BLUE,BLUE,BLUE,BLACK,
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK,
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK,
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK,
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK,
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK
+};
+
+unsigned char tottem2[]={
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK,
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK,
+BLUE,BLACK,BLUE,BLUE,BLACK,BLUE,
+BLACK,BLUE,BLUE,BLUE,BLUE,BLACK,
+BLACK,BLACK,GREEN,GREEN,BLACK,BLACK,
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK,
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK,
+BLUE,BLACK,BLUE,BLUE,BLACK,BLUE,
+BLACK,BLUE,BLUE,BLUE,BLUE,BLACK,
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK,
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK,
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK,
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK,
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK
+};
+
+unsigned char tottem3[]={
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK,
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK,
+BLUE,BLACK,BLUE,BLUE,BLACK,BLUE,
+BLACK,BLUE,BLUE,BLUE,BLUE,BLACK,
+BLACK,BLACK,WHITE,WHITE,BLACK,BLACK,
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK,
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK,
+BLUE,BLACK,BLUE,BLUE,BLACK,BLUE,
+BLACK,BLUE,BLUE,BLUE,BLUE,BLACK,
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK,
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK,
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK,
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK,
+BLACK,BLACK,BLUE,BLUE,BLACK,BLACK
 };
 
 unsigned char walls[] ={
@@ -59,6 +125,15 @@ WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WH
 WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,
 WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE
 
+};
+unsigned char hint1[]={
+  BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,
+  BLACK,CYAN,BLACK,GREEN,BLACK,WHITE,BLACK,
+  BLACK,CYAN,BLACK,GREEN,BLACK,WHITE,BLACK,
+  BLACK,CYAN,BLACK,GREEN,BLACK,WHITE,BLACK,
+  BLACK,CYAN,BLACK,GREEN,BLACK,WHITE,BLACK,
+  BLACK,CYAN,BLACK,GREEN,BLACK,WHITE,BLACK,
+  BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK
 };
 
 void renderBlock(block _block){
@@ -109,6 +184,10 @@ void init_block(block* _block, int type, int x, int y, int width, int height, in
     case 3 : _block->image = walls; break;
     case 4 : _block->image = exit_Door; break;
     case 5 : _block->image = enter_Door; break;
+    case 6 : _block->image = tottem1; break;
+    case 7 : _block->image = heart; break;
+    case 8 : _block->image = tottem2; break;
+    case 9 : _block->image = tottem3; break;
     default : break;
   }
   _block->active = active;
@@ -116,3 +195,95 @@ void init_block(block* _block, int type, int x, int y, int width, int height, in
   _block->height = height;
   _block->type = type;
 }
+
+void init_game(game* _game, int mundo, int nivel){
+ _game->mundo = mundo;
+ _game->nivel = nivel;
+ switch(mundo){
+   case 0:
+     if(nivel == 0){
+       _game->hint = " ";
+       _game->win[0] = 2;
+       _game->win[1] = 0;
+       _game->win[2] = 1;
+       init_block(&_game->obstaculo[0], 8, 60, 26, 6, 14 , 1);
+       init_block(&_game->obstaculo[1], 9, 90, 26, 6, 14 , 1);
+       init_block(&_game->obstaculo[2], 6, 120, 26, 6, 14 , 1);
+       
+     }else if(nivel == 1){
+       _game->hint = " ";
+       _game->win[0] = 2;
+       _game->win[1] = 0;
+       _game->win[2] = 1;
+       init_block(&_game->obstaculo[0], 6, 60, 26, 6, 14 , 1);
+       init_block(&_game->obstaculo[1], 8, 90, 26, 6, 14 , 1);
+       init_block(&_game->obstaculo[2], 9, 120, 26, 6, 14 , 1);
+       
+     }else{
+       _game->hint = " ";
+       _game->win[0] = 2;
+       _game->win[1] = 0;
+       _game->win[2] = 1;
+       init_block(&_game->obstaculo[0], 6, 60, 26, 6, 14 , 1);
+       init_block(&_game->obstaculo[1], 8, 90, 26, 6, 14 , 1);
+       init_block(&_game->obstaculo[2], 9, 120, 26, 6, 14 , 1);
+     }
+     break;
+   case 1:
+     if(nivel == 0){
+       _game->hint = " ";
+       _game->win[0] = 2;
+       _game->win[1] = 0;
+       _game->win[2] = 1;
+       init_block(&_game->obstaculo[0], 6, 60, 26, 6, 14 , 1);
+       init_block(&_game->obstaculo[1], 8, 90, 26, 6, 14 , 1);
+       init_block(&_game->obstaculo[2], 9, 120, 26, 6, 14 , 1);
+     }else if(nivel == 1){
+       _game->hint = " ";
+       _game->win[0] = 2;
+       _game->win[1] = 0;
+       _game->win[2] = 1;
+       init_block(&_game->obstaculo[0], 6, 60, 26, 6, 14 , 1);
+       init_block(&_game->obstaculo[1], 8, 90, 26, 6, 14 , 1);
+       init_block(&_game->obstaculo[2], 9, 120, 26, 6, 14 , 1);
+     }else{
+       _game->hint = " ";
+       _game->win[0] = 2;
+       _game->win[1] = 0;
+       _game->win[2] = 1;
+       init_block(&_game->obstaculo[0], 6, 60, 26, 6, 14 , 1);
+       init_block(&_game->obstaculo[1], 8, 90, 26, 6, 14 , 1);
+       init_block(&_game->obstaculo[2], 9, 120, 26, 6, 14 , 1);
+     }
+     break;
+   case 2:
+     if(nivel == 0){
+       _game->hint = " ";
+       _game->win[0] = 2;
+       _game->win[1] = 0;
+       _game->win[2] = 1;
+       init_block(&_game->obstaculo[0], 6, 60, 26, 6, 14 , 1);
+       init_block(&_game->obstaculo[1], 8, 90, 26, 6, 14 , 1);
+       init_block(&_game->obstaculo[2], 9, 120, 26, 6, 14 , 1);
+     }else if(nivel == 1){
+       _game->hint = " ";
+       _game->win[0] = 2;
+       _game->win[1] = 0;
+       _game->win[2] = 1;
+       init_block(&_game->obstaculo[0], 6, 60, 26, 6, 14 , 1);
+       init_block(&_game->obstaculo[1], 8, 90, 26, 6, 14 , 1);
+       init_block(&_game->obstaculo[2], 9, 120, 26, 6, 14 , 1);
+     }else{
+       _game->hint = " ";
+       _game->win[0] = 2;
+       _game->win[1] = 0;
+       _game->win[2] = 1;
+       init_block(&_game->obstaculo[0], 6, 60, 26, 6, 14 , 1);
+       init_block(&_game->obstaculo[1], 8, 90, 26, 6, 14 , 1);
+       init_block(&_game->obstaculo[2], 9, 120, 26, 6, 14 , 1);
+     }
+     break;
+ }
+};
+
+

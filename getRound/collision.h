@@ -12,7 +12,8 @@ struct game{
   int mundo;
   int nivel;
   struct block obstaculo[3];
-  char *hint; 
+  unsigned char *hint; 
+  char *label;
   int win [3];
 };
 
@@ -202,16 +203,18 @@ void init_game(game* _game, int mundo, int nivel){
  switch(mundo){
    case 0:
      if(nivel == 0){
-       _game->hint = " ";
-       _game->win[0] = 2;
-       _game->win[1] = 0;
-       _game->win[2] = 1;
-       init_block(&_game->obstaculo[0], 8, 60, 26, 6, 14 , 1);
-       init_block(&_game->obstaculo[1], 9, 90, 26, 6, 14 , 1);
-       init_block(&_game->obstaculo[2], 6, 120, 26, 6, 14 , 1);
+       _game->label = "1-1";
+       _game->hint = hint1;
+       _game->win[0] = 1;
+       _game->win[1] = 2;
+       _game->win[2] = 0;
+       init_block(&_game->obstaculo[0], 6, 60, 30, 6, 14 , 1);
+       init_block(&_game->obstaculo[1], 8, 90, 80, 6, 14 , 1);
+       init_block(&_game->obstaculo[2], 9, 120, 50, 6, 14 , 1);
        
      }else if(nivel == 1){
-       _game->hint = " ";
+       _game->label = "1-2";
+       _game->hint = hint1;
        _game->win[0] = 2;
        _game->win[1] = 0;
        _game->win[2] = 1;
@@ -220,18 +223,20 @@ void init_game(game* _game, int mundo, int nivel){
        init_block(&_game->obstaculo[2], 9, 120, 26, 6, 14 , 1);
        
      }else{
-       _game->hint = " ";
+       _game->label = "1-3";
+       _game->hint = hint1;
        _game->win[0] = 2;
-       _game->win[1] = 0;
-       _game->win[2] = 1;
-       init_block(&_game->obstaculo[0], 6, 60, 26, 6, 14 , 1);
-       init_block(&_game->obstaculo[1], 8, 90, 26, 6, 14 , 1);
-       init_block(&_game->obstaculo[2], 9, 120, 26, 6, 14 , 1);
+       _game->win[1] = 1;
+       _game->win[2] = 0;
+       init_block(&_game->obstaculo[0], 6, 40, 20, 6, 14 , 1);
+       init_block(&_game->obstaculo[1], 8, 75, 50, 6, 14 , 1);
+       init_block(&_game->obstaculo[2], 9, 100, 90, 6, 14 , 1);
      }
      break;
    case 1:
      if(nivel == 0){
-       _game->hint = " ";
+       _game->label = "2-1";
+       _game->hint = hint1;
        _game->win[0] = 2;
        _game->win[1] = 0;
        _game->win[2] = 1;
@@ -239,7 +244,8 @@ void init_game(game* _game, int mundo, int nivel){
        init_block(&_game->obstaculo[1], 8, 90, 26, 6, 14 , 1);
        init_block(&_game->obstaculo[2], 9, 120, 26, 6, 14 , 1);
      }else if(nivel == 1){
-       _game->hint = " ";
+       _game->label = "2-2";
+       _game->hint = hint1;
        _game->win[0] = 2;
        _game->win[1] = 0;
        _game->win[2] = 1;
@@ -247,7 +253,8 @@ void init_game(game* _game, int mundo, int nivel){
        init_block(&_game->obstaculo[1], 8, 90, 26, 6, 14 , 1);
        init_block(&_game->obstaculo[2], 9, 120, 26, 6, 14 , 1);
      }else{
-       _game->hint = " ";
+       _game->label = "2-3";
+       _game->hint = hint1;
        _game->win[0] = 2;
        _game->win[1] = 0;
        _game->win[2] = 1;
@@ -258,7 +265,8 @@ void init_game(game* _game, int mundo, int nivel){
      break;
    case 2:
      if(nivel == 0){
-       _game->hint = " ";
+       _game->label = "3-1";
+       _game->hint = hint1;
        _game->win[0] = 2;
        _game->win[1] = 0;
        _game->win[2] = 1;
@@ -266,7 +274,8 @@ void init_game(game* _game, int mundo, int nivel){
        init_block(&_game->obstaculo[1], 8, 90, 26, 6, 14 , 1);
        init_block(&_game->obstaculo[2], 9, 120, 26, 6, 14 , 1);
      }else if(nivel == 1){
-       _game->hint = " ";
+       _game->label = "3-2";
+       _game->hint = hint1;
        _game->win[0] = 2;
        _game->win[1] = 0;
        _game->win[2] = 1;
@@ -274,7 +283,8 @@ void init_game(game* _game, int mundo, int nivel){
        init_block(&_game->obstaculo[1], 8, 90, 26, 6, 14 , 1);
        init_block(&_game->obstaculo[2], 9, 120, 26, 6, 14 , 1);
      }else{
-       _game->hint = " ";
+       _game->label = "3-3";
+       _game->hint = hint1;
        _game->win[0] = 2;
        _game->win[1] = 0;
        _game->win[2] = 1;

@@ -238,7 +238,7 @@ void play(){
   VGA.setBackgroundColor(WHITE);
   VGA.printtext(0, 10, room[indexRoom].label);
   VGA.printtext(0, 20, "Hint:");
-  VGA.writeArea(0,30,7,7,hint1);
+  VGA.writeArea(0,30,11,15,room[indexRoom].hint);
   VGA.setBackgroundColor(BLACK);
 }
 
@@ -262,23 +262,27 @@ void movePlayer()
  
  if(digitalRead(btn_R) || digitalRead(FPGA_BTN_0))
   {
+    player.image = pixel;
     if(!Collision(player,wall[2]))
       player.posX += 2;
   }
 	
   if(digitalRead(btn_L) || digitalRead(FPGA_BTN_1))
   {
+    player.image = player2;
     if(!Collision(player,wall[3]))
       player.posX -= 2;
   }
  
   if(digitalRead(btn_U) || digitalRead(FPGA_BTN_2))
   {
+    player.image = player4;
     if(!Collision(player,wall[0]))
       player.posY -= 2;    
   }
   if(digitalRead(btn_D) || digitalRead(FPGA_BTN_3))
   {
+    player.image = player3;
     if(!Collision(player,wall[1]))
       player.posY += 2; 
   }
@@ -303,11 +307,12 @@ void movePlayer()
     room[indexRoom].obstaculo[2].active = 0;
   }
   
-  if(Interaction(player,door[1]) && digitalRead(btn_A) && win_cons >= 3){
+  if(Interaction(player,door[1]) && digitalRead(btn_A)){
     int cur = indexRoom;
     if((win [0] == room[cur].win[0]) && (win [1] == room[cur].win[1]) && (win [2] == room[cur].win[2])){
-      if((mundo * nivel) == 3){
+      if((mundo*nivel) == 3){
         state = 2;
+        indexRoom++;
       }else if(nivel == 3){
         mundo++;
         nivel = 1;
@@ -318,8 +323,8 @@ void movePlayer()
       }
       resetLevel();
     }else{
-      resetLevel();
       vidas--;
+      resetLevel();
     }
   }
 };
@@ -327,12 +332,20 @@ void movePlayer()
 void gano(){
   VGA.setBackgroundColor(WHITE);
   VGA.printtext(32, 20, "WIN");
+  VGA.printtext(0, 40, "Congratulations!");
+  VGA.writeArea(60,20,6,10,tottem1);
+  VGA.writeArea(20,20,6,10,pixel);
+  VGA.printtext(0, 70, "Press B To continue");
   VGA.setBackgroundColor(BLACK);
 };
 
 void perdio(){
   VGA.setBackgroundColor(WHITE);
   VGA.printtext(32, 20, "LOOSE");
+  VGA.printtext(0, 40, "Sorry Try Again!");
+  VGA.writeArea(80,20,6,10,tottem2);
+  VGA.writeArea(20,20,6,10,player2);
+  VGA.printtext(0, 70, "Press B To continue");
   VGA.setBackgroundColor(BLACK);
 };
 
@@ -357,6 +370,12 @@ void reinit_game(){
   win[2] = 0 ;
   win_cons = 0;
   indexRoom = 0;
+  
+  for(int i = 0; i <=8; i++){
+    room[i].obstaculo[0].active = 1;
+    room[i].obstaculo[1].active = 1;
+    room[i].obstaculo[2].active = 1;
+  }
 };
 
 void menu(){
@@ -394,7 +413,7 @@ void loop()
   //win
   if(state == 2){
     render_page(&gano,&nan,100000);
-    if(digitalRead(btn_A)){
+    if(digitalRead(btn_B)){
       state = 0;
       reinit_game();
     }
@@ -402,7 +421,7 @@ void loop()
   //loose
   if(state == 3){
     render_page(&perdio,&nan,100000);
-    if(digitalRead(btn_A)){
+    if(digitalRead(btn_B)){
       state = 0;
       reinit_game();
     }

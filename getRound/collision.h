@@ -42,6 +42,45 @@ BLACK,BLACK,WHITE,BLACK,BLACK,
 WHITE,BLACK,BLACK,WHITE,BLACK
 };
 
+unsigned char player2[]={
+BLACK,BLACK,WHITE,WHITE,BLACK,BLACK,
+BLACK,BLACK,BLACK,WHITE,BLACK,BLACK,
+BLACK,BLACK,WHITE,WHITE,BLACK,BLACK,
+BLACK,WHITE,WHITE,WHITE,WHITE,BLACK,
+WHITE,BLACK,WHITE,WHITE,BLACK,WHITE,
+BLACK,BLACK,WHITE,WHITE,BLACK,BLACK,
+BLACK,BLACK,WHITE,WHITE,BLACK,BLACK,
+BLACK,WHITE,BLACK,BLACK,WHITE,BLACK,
+BLACK,WHITE,BLACK,BLACK,WHITE,BLACK,
+BLACK,WHITE,BLACK,BLACK,WHITE,BLACK
+};
+
+unsigned char player3[]={
+BLACK,BLACK,WHITE,WHITE,BLACK,BLACK,
+BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,
+BLACK,BLACK,WHITE,WHITE,BLACK,BLACK,
+BLACK,WHITE,WHITE,WHITE,WHITE,BLACK,
+WHITE,BLACK,WHITE,WHITE,BLACK,WHITE,
+BLACK,BLACK,WHITE,WHITE,BLACK,BLACK,
+BLACK,BLACK,WHITE,WHITE,BLACK,BLACK,
+BLACK,WHITE,BLACK,BLACK,WHITE,BLACK,
+BLACK,WHITE,BLACK,BLACK,WHITE,BLACK,
+BLACK,WHITE,BLACK,BLACK,WHITE,BLACK
+};
+
+unsigned char player4[]={
+BLACK,BLACK,WHITE,WHITE,BLACK,BLACK,
+BLACK,BLACK,WHITE,WHITE,BLACK,BLACK,
+BLACK,BLACK,WHITE,WHITE,BLACK,BLACK,
+BLACK,WHITE,WHITE,WHITE,WHITE,BLACK,
+WHITE,BLACK,WHITE,WHITE,BLACK,WHITE,
+BLACK,BLACK,WHITE,WHITE,BLACK,BLACK,
+BLACK,BLACK,WHITE,WHITE,BLACK,BLACK,
+BLACK,WHITE,BLACK,BLACK,WHITE,BLACK,
+BLACK,WHITE,BLACK,BLACK,WHITE,BLACK,
+BLACK,WHITE,BLACK,BLACK,WHITE,BLACK
+};
+
 unsigned char heart[]={
 BLACK,RED,BLACK,RED,BLACK,
 RED,BLACK,RED,BLACK,RED,
@@ -127,16 +166,59 @@ WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WH
 WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE,WHITE, WHITE
 
 };
-unsigned char hint1[]={
-  BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,
-  BLACK,CYAN,BLACK,GREEN,BLACK,WHITE,BLACK,
-  BLACK,CYAN,BLACK,GREEN,BLACK,WHITE,BLACK,
-  BLACK,CYAN,BLACK,GREEN,BLACK,WHITE,BLACK,
-  BLACK,CYAN,BLACK,GREEN,BLACK,WHITE,BLACK,
-  BLACK,CYAN,BLACK,GREEN,BLACK,WHITE,BLACK,
-  BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK
+unsigned char hint2[]={  
+  BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,
+  BLACK,WHITE,BLACK,BLACK,BLACK,CYAN,BLACK,BLACK,BLACK,GREEN,BLACK,
+  BLACK,WHITE,BLACK,BLACK,BLACK,CYAN,BLACK,BLACK,BLACK,GREEN,BLACK,
+  BLACK,WHITE,BLACK,BLACK,BLACK,CYAN,BLACK,BLACK,BLACK,GREEN,BLACK,
+  BLACK,WHITE,BLACK,BLACK,BLACK,CYAN,BLACK,BLACK,BLACK,GREEN,BLACK,
+  BLACK,WHITE,BLACK,BLACK,BLACK,CYAN,BLACK,BLACK,BLACK,GREEN,BLACK,
+  BLACK,WHITE,BLACK,BLACK,BLACK,CYAN,BLACK,BLACK,BLACK,GREEN,BLACK,
+  BLACK,WHITE,BLACK,BLACK,BLACK,CYAN,BLACK,BLACK,BLACK,GREEN,BLACK,
+  BLACK,WHITE,BLACK,BLACK,BLACK,CYAN,BLACK,BLACK,BLACK,GREEN,BLACK,
+  BLACK,WHITE,BLACK,BLACK,BLACK,CYAN,BLACK,BLACK,BLACK,GREEN,BLACK,
+  BLACK,WHITE,BLACK,BLACK,BLACK,CYAN,BLACK,BLACK,BLACK,GREEN,BLACK,
+  BLACK,WHITE,BLACK,BLACK,BLACK,CYAN,BLACK,BLACK,BLACK,GREEN,BLACK,
+  BLACK,WHITE,BLACK,BLACK,BLACK,CYAN,BLACK,BLACK,BLACK,GREEN,BLACK,
+  BLACK,WHITE,BLACK,BLACK,BLACK,CYAN,BLACK,BLACK,BLACK,GREEN,BLACK,
+  BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK
 };
 
+unsigned char hint1[]={   
+  BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,
+  BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,
+  BLACK,GREEN,BLACK,BLACK,GREEN,GREEN,BLACK,GREEN,GREEN,BLACK,BLACK,
+  BLACK,BLACK,GREEN,BLACK,BLACK,GREEN,BLACK,BLACK,BLACK,GREEN,BLACK,
+  BLACK,BLACK,BLACK,GREEN,BLACK,GREEN,BLACK,BLACK,BLACK,GREEN,BLACK,
+  BLACK,BLACK,BLACK,GREEN,BLACK,GREEN,BLACK,BLACK,GREEN,BLACK,BLACK,
+  BLACK,GREEN,GREEN,BLACK,BLACK,GREEN,BLACK,GREEN,BLACK,BLACK,BLACK,
+  BLACK,BLACK,GREEN,BLACK,BLACK,GREEN,BLACK,GREEN,BLACK,BLACK,BLACK,
+  BLACK,BLACK,BLACK,GREEN,BLACK,GREEN,BLACK,GREEN,BLACK,BLACK,BLACK,
+  BLACK,BLACK,BLACK,GREEN,BLACK,GREEN,BLACK,GREEN,BLACK,BLACK,BLACK,
+  BLACK,BLACK,GREEN,BLACK,BLACK,GREEN,BLACK,GREEN,BLACK,BLACK,BLACK,
+  BLACK,GREEN,BLACK,BLACK,GREEN,GREEN,GREEN,BLACK,GREEN,GREEN,BLACK,
+  BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,
+  BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,
+  BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK
+};
+
+unsigned char hint3[]={
+  BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,
+  BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,
+  BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,
+  BLACK,BLACK,BLACK,WHITE,BLACK,BLACK,GREEN,BLACK,BLACK,CYAN,BLACK,
+  BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,
+  BLACK,BLACK,WHITE,BLACK,BLACK,GREEN,BLACK,BLACK,CYAN,BLACK,BLACK,
+  BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,
+  BLACK,WHITE,BLACK,BLACK,GREEN,BLACK,BLACK,CYAN,BLACK,BLACK,BLACK,
+  BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,
+  BLACK,BLACK,WHITE,BLACK,BLACK,GREEN,BLACK,BLACK,CYAN,BLACK,BLACK,
+  BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,
+  BLACK,BLACK,BLACK,WHITE,BLACK,BLACK,GREEN,BLACK,BLACK,CYAN,BLACK,
+  BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,
+  BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,
+  BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK
+};
 void renderBlock(block _block){
   if(_block.active)
      VGA.writeArea(_block.posX,_block.posY, _block.width, _block.height, _block.image);
@@ -185,10 +267,10 @@ void init_block(block* _block, int type, int x, int y, int width, int height, in
     case 3 : _block->image = walls; break;
     case 4 : _block->image = exit_Door; break;
     case 5 : _block->image = enter_Door; break;
-    case 6 : _block->image = tottem1; break;
+    case 6 : _block->image = tottem1; break;//CYAN
     case 7 : _block->image = heart; break;
-    case 8 : _block->image = tottem2; break;
-    case 9 : _block->image = tottem3; break;
+    case 8 : _block->image = tottem2; break;//GREEN
+    case 9 : _block->image = tottem3; break;//WHITE
     default : break;
   }
   _block->active = active;
@@ -214,7 +296,7 @@ void init_game(game* _game, int mundo, int nivel){
        
      }else if(nivel == 1){
        _game->label = "1-2";
-       _game->hint = hint1;
+       _game->hint = hint2;
        _game->win[0] = 2;
        _game->win[1] = 0;
        _game->win[2] = 1;
@@ -224,11 +306,11 @@ void init_game(game* _game, int mundo, int nivel){
        
      }else{
        _game->label = "1-3";
-       _game->hint = hint1;
+       _game->hint = hint3;
        _game->win[0] = 2;
        _game->win[1] = 1;
        _game->win[2] = 0;
-       init_block(&_game->obstaculo[0], 6, 40, 20, 6, 14 , 1);
+       init_block(&_game->obstaculo[0], 6, 50, 20, 6, 14 , 1);
        init_block(&_game->obstaculo[1], 8, 75, 50, 6, 14 , 1);
        init_block(&_game->obstaculo[2], 9, 100, 90, 6, 14 , 1);
      }
@@ -237,49 +319,49 @@ void init_game(game* _game, int mundo, int nivel){
      if(nivel == 0){
        _game->label = "2-1";
        _game->hint = hint1;
-       _game->win[0] = 2;
-       _game->win[1] = 0;
-       _game->win[2] = 1;
-       init_block(&_game->obstaculo[0], 6, 60, 26, 6, 14 , 1);
-       init_block(&_game->obstaculo[1], 8, 90, 26, 6, 14 , 1);
-       init_block(&_game->obstaculo[2], 9, 120, 26, 6, 14 , 1);
+       _game->win[0] = 0;
+       _game->win[1] = 1;
+       _game->win[2] = 2;
+       init_block(&_game->obstaculo[0], 6, 75, 90, 6, 14 , 1);
+       init_block(&_game->obstaculo[1], 8, 130, 18, 6, 14 , 1);
+       init_block(&_game->obstaculo[2], 9, 130, 90, 6, 14 , 1);
      }else if(nivel == 1){
        _game->label = "2-2";
        _game->hint = hint1;
-       _game->win[0] = 2;
+       _game->win[0] = 1;
        _game->win[1] = 0;
-       _game->win[2] = 1;
-       init_block(&_game->obstaculo[0], 6, 60, 26, 6, 14 , 1);
-       init_block(&_game->obstaculo[1], 8, 90, 26, 6, 14 , 1);
-       init_block(&_game->obstaculo[2], 9, 120, 26, 6, 14 , 1);
+       _game->win[2] = 2;
+       init_block(&_game->obstaculo[0], 6, 50, 90, 6, 14 , 1);
+       init_block(&_game->obstaculo[1], 8, 80, 20, 6, 14 , 1);
+       init_block(&_game->obstaculo[2], 9, 130, 50, 6, 14 , 1);
      }else{
        _game->label = "2-3";
        _game->hint = hint1;
        _game->win[0] = 2;
        _game->win[1] = 0;
        _game->win[2] = 1;
-       init_block(&_game->obstaculo[0], 6, 60, 26, 6, 14 , 1);
-       init_block(&_game->obstaculo[1], 8, 90, 26, 6, 14 , 1);
-       init_block(&_game->obstaculo[2], 9, 120, 26, 6, 14 , 1);
+       init_block(&_game->obstaculo[0], 6, 130, 90, 6, 14 , 1);
+       init_block(&_game->obstaculo[1], 8, 90, 50, 6, 14 , 1);
+       init_block(&_game->obstaculo[2], 9, 120, 20, 6, 14 , 1);
      }
      break;
    case 2:
      if(nivel == 0){
        _game->label = "3-1";
        _game->hint = hint1;
-       _game->win[0] = 2;
-       _game->win[1] = 0;
+       _game->win[0] = 0;
+       _game->win[1] = 2;
        _game->win[2] = 1;
-       init_block(&_game->obstaculo[0], 6, 60, 26, 6, 14 , 1);
-       init_block(&_game->obstaculo[1], 8, 90, 26, 6, 14 , 1);
-       init_block(&_game->obstaculo[2], 9, 120, 26, 6, 14 , 1);
+       init_block(&_game->obstaculo[0], 6, 80, 20, 6, 14 , 1);
+       init_block(&_game->obstaculo[1], 8, 130, 50, 6, 14 , 1);
+       init_block(&_game->obstaculo[2], 9, 50, 90, 6, 14 , 1);
      }else if(nivel == 1){
        _game->label = "3-2";
        _game->hint = hint1;
-       _game->win[0] = 2;
-       _game->win[1] = 0;
-       _game->win[2] = 1;
-       init_block(&_game->obstaculo[0], 6, 60, 26, 6, 14 , 1);
+       _game->win[0] = 0;
+       _game->win[1] = 1;
+       _game->win[2] = 2;
+       init_block(&_game->obstaculo[0], 6, 80, 26, 6, 14 , 1);
        init_block(&_game->obstaculo[1], 8, 90, 26, 6, 14 , 1);
        init_block(&_game->obstaculo[2], 9, 120, 26, 6, 14 , 1);
      }else{
